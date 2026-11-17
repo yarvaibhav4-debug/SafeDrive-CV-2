@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SafeDrive CV</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>
+  <div>
+    <h1>SafeDrive <span>CV</span></h1>
+    <p>Computer-Vision-Based Road Safety Assistant</p>
+  </div>
+  <div class="badge">PROTOTYPE • 2026</div>
+</header>
+
+<main>
+  <section class="hero">
+    <div>
+      <h2>Detection of Traffic Signals & Lane Markings</h2>
+      <p>Upload a road video to analyse lane boundaries, estimate lane position and identify visible traffic-signal colours.</p>
+    </div>
+    <form method="post" enctype="multipart/form-data">
+      <label class="upload">
+        <input type="file" name="video" accept=".mp4,.avi,.mov,.mkv" required>
+        <strong>Choose Road Video</strong>
+        <small>MP4 / AVI / MOV / MKV</small>
+      </label>
+      <button type="submit">Analyse Video →</button>
+    </form>
+  </section>
+
+  {% if error %}
+  <div class="alert">{{ error }}</div>
+  {% endif %}
+
+  {% if result %}
+  <section class="results">
+    <div class="video-card">
+      <h3>Processed Road Video</h3>
+      <video controls autoplay muted loop>
+        <source src="{{ url_for('outputs', name=result.video) }}" type="video/mp4">
+      </video>
+    </div>
+    <div class="panel">
+      <h3>System Modules</h3>
+      <div class="item"><span>Lane Detection</span><b>OpenCV</b></div>
+      <div class="item"><span>Traffic Detection</span><b>Colour Analysis</b></div>
+      <div class="item"><span>Decision Logic</span><b>Python</b></div>
+      <div class="item"><span>Frames Processed</span><b>{{ result.frames }}</b></div>
+      <div class="item"><span>Source FPS</span><b>{{ result.fps }}</b></div>
+      <p class="note">For the academic prototype, traffic-light colour estimation is lightweight and may be affected by lighting, reflections and background colours.</p>
+    </div>
+  </section>
+  {% endif %}
+
+  <section class="architecture">
+    <h3>How SafeDrive CV Works</h3>
+    <div class="flow">
+      <div>Road Video</div><i>→</i><div>OpenCV<br>Lane Detection</div><i>→</i>
+      <div>Traffic Signal<br>Analysis</div><i>→</i><div>Safety<br>Decision</div><i>→</i><div>Warning</div>
+    </div>
+  </section>
+
+  <footer>
+    Academic prototype • Not for real vehicle control • Driver-assistance demonstration only
+  </footer>
+</main>
+</body>
+</html>
